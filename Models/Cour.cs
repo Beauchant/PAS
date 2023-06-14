@@ -10,5 +10,6 @@
         public Classe Classe { get; set; }
 
         public ICollection<Professeur> Professeurs { get; set; }
+        public ICollection<CourEtudiant> CourEtudiants { get; set; }
     }
 }

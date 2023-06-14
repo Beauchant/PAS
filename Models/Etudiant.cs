@@ -13,7 +13,9 @@
         public string? Occupation { get; set; }
         public string? StatutMatrimonial { get; set; }
         public string Maladie { get; set; }
-        public ICollection<Classe> Classes { get; set; }
+        //public ICollection<Classe> Classes { get; set; }
         public ICollection<Cour> Cours { get; set; }
+        public ICollection<Classe> Classes { get; set; }
+        public ICollection<CourEtudiant> CourEtudiants { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace PAS.Data
         public DbSet<Heure> Heures { get; set; }
         public DbSet<Jour> Jours { get; set; }
         public DbSet<Etudiant> Etudiants { get; set; }
+        public DbSet<CourEtudiant> CourEtudiants { get; set; }
 
         public PASDbContext(DbContextOptions<PASDbContext> options) : base(options)
         {
@@ -48,15 +49,23 @@ namespace PAS.Data
                 .HasForeignKey(j => j.ProfesseurId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Etudiant>()
-                .HasMany(e => e.Classes)
-                .WithMany(c => c.Etudiants)
-                .UsingEntity(j => j.ToTable("EtudiantClasse"));
+            modelBuilder.Entity<CourEtudiant>()
+                .HasKey(ce => new { ce.CourId, ce.EtudiantId });
 
-            modelBuilder.Entity<Etudiant>()
-                .HasMany(e => e.Cours)
-                .WithMany(c => c.Etudiants)
-                .UsingEntity(j => j.ToTable("EtudiantCours"));
+            modelBuilder.Entity<CourEtudiant>()
+                .HasOne(ce => ce.Cour)
+                .WithMany(c => c.CourEtudiants)
+                .HasForeignKey(ce => ce.CourId);
+
+            modelBuilder.Entity<CourEtudiant>()
+                .HasOne(ce => ce.Etudiant)
+                .WithMany(e => e.CourEtudiants)
+                .HasForeignKey(ce => ce.EtudiantId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CourEtudiant>()
+                .ToTable("CourEtudiant");
         }
     }
 }
